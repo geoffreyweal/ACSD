@@ -148,7 +148,7 @@ def run_ACSD(paths_to_identifiers, overwrite_existing_crystal_files=True, crysta
 	print('Obtained crystals from the CSD for identifiers in: '+str(crystals_database_folder_name))
 	print('Number of crystals obtained from the database: '+str(no_of_crystals_recorded))
 	print('  -> Number of crystals already recorded in previous ACSD runs: '+str(no_of_already_processed_crystals))
-	print('  -> Number of crystals excluded from the ACSD run for some reason (for example, contained a metal, was not organic, was a polymer, etc): '+str(no_of_excluded_crystals))
+	print('  -> Number of crystals excluded from the acsd run for some reason (for example, contained a metal, was not organic, was a polymer, etc): '+str(no_of_excluded_crystals))
 	print('-'*no_of_lines)
 	print('Number of crystals with no coordinates given: '+str(len(list_of_crystals_with_no_coordinates_given)))
 	print('Number of crystals rejected: '+str(len(list_of_rejected_crystals)))
