@@ -163,15 +163,15 @@ Home-page: https://wiki.fysik.dtu.dk/ase
 Author: None
 Author-email: None
 License: LGPLv2.1+
-Location: /Users/geoffreyweal/Library/Python/3.7/lib/python/site-packages
+Location: /Users/geoffreyweal/Library/Python/3.11/lib/python/site-packages
 Requires: matplotlib, scipy, numpy
 Required-by: 
 ```
 
-Copy the ``Location`` line. If we remove the ``lib/python/site-packages`` bit and replace it with ``bin``, this gives us the location of useful ASE programs. The example below is for Python 3.7. 
+Copy the ``Location`` line. If we remove the ``lib/python/site-packages`` bit and replace it with ``bin``, this gives us the location of useful ASE programs. The example below is for Python 3.11. 
 
 ```bash
-/Users/geoffreyweal/Library/Python/3.7/bin
+/Users/geoffreyweal/Library/Python/3.11/bin
 ```
 
 Next, add this to your ``~/.bashrc`` file as below:
@@ -179,7 +179,7 @@ Next, add this to your ``~/.bashrc`` file as below:
 ```bash
 ############################################################
 # For ASE
-export PATH=/Users/geoffreyweal/Library/Python/3.7/bin:$PATH
+export PATH=/Users/geoffreyweal/Library/Python/3.11/bin:$PATH
 ############################################################
 ```
 
@@ -267,7 +267,6 @@ echo '
 # Used for the Access Cambridge Structural Database (ACSD) Program
 export PATH_TO_ACSD="'$PWD'/ACSD" 
 export PYTHONPATH="$PATH_TO_ACSD":$PYTHONPATH
-export PATH="$PATH_TO_ACSD"/bin:$PATH
 ###################################
 ' >> ~/.bashrc
 ```
@@ -284,13 +283,22 @@ Finally, source your ``~/.bashrc`` file by typing the following into the termina
 source ~/.bashrc
 ```
 
-Once you have run ``source ~/.bashrc``, the ACSD program should be all ready to go! You can check this by typing the following into the terminal:
+Once you have run ``source ~/.bashrc``, the ACSD python package is on your ``PYTHONPATH``, so you can ``import ACSD`` from your own scripts.
+
+That does not give you the ``acsd`` terminal command. ``acsd`` is generated when the package is installed, rather than shipped as a file inside the repository, so a cloned copy alone does not provide it. To create it from your clone, run an editable install from inside the ACSD folder:
 
 ```bash
-which ACSD
+cd "$PATH_TO_ACSD"
+pip3 install --upgrade --user -e .
 ```
 
-This should give you the path to the ACSD program. If the terminal tells you it can not find this program, check that the path you gave for ``PATH_TO_ACSD`` is the correct path to the ACSD folder. 
+You can then check that everything is in place by typing the following into the terminal:
+
+```bash
+which acsd
+```
+
+This should give you the path to the ``acsd`` command. If the terminal tells you it can not find it, check that the editable install above completed, and that the path you gave for ``PATH_TO_ACSD`` is the correct path to the ACSD folder. 
 
 
 #### Summary of ``~/.bashrc`` input
@@ -302,7 +310,6 @@ You want to have the following in your ``~/.bashrc``:
 # Used for the Access Cambridge Structural Database (ACSD) Program
 export PATH_TO_ACSD="<Path_to_ACSD>" 
 export PYTHONPATH="$PATH_TO_ACSD":$PYTHONPATH
-export PATH="$PATH_TO_ACSD"/bin:$PATH
 ###################################
 ```
 
