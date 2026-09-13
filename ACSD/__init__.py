@@ -1,7 +1,7 @@
 # The information about the Access Cambridge Structural Database program
 
 __name__    = 'ACSD (The Access Cambridge Structural Database Program)'
-__version__ = '0.18'
+__version__ = '0.19.0'
 __author__  = 'Dr. Geoffrey Weal, Dr. Josh Sutton, Dr. Chayanit Wechwithayakhlung, Dr. Daniel Packwood, Dr. Paul Hume, Prof. Justin Hodgkiss'
 
 import sys
@@ -82,28 +82,6 @@ if version.parse(ase.__version__) < version.parse(ase_version_minimum):
 	raise ImportError(toString)
 
 # ------------------------------------------------------------------------------------------------------------------------
-
-numpy_spec = find_spec("numpy")
-numpy_found = (numpy_spec is not None)
-if not numpy_found:
-	toString = ''
-	toString += '\n'
-	toString += '================================================'+'\n'
-	toString += 'This is the Access Cambridge Structural Database Program'+'\n'
-	toString += 'Version: '+str(__version__)+'\n'
-	toString += '\n'
-	toString += 'The Access Cambridge Structural Database program requires the "numpy" program.'+'\n'
-	toString += '\n'
-	toString += 'Install numpy by typing the following into your terminal\n'
-	toString += '\n'
-	toString += 'pip install --user --upgrade numpy\n'
-	toString += '\n'
-	toString += 'This program should have been installed when you installed ASE using pip\n'
-	toString += '\n'
-	toString += 'This program will exit before beginning'+'\n'
-	toString += '================================================'+'\n'
-	raise ImportError(toString)	
-
 # ------------------------------------------------------------------------------------------------------------------------
 
 ccdc_spec = find_spec("ccdc")
@@ -192,6 +170,6 @@ __author_email__ = 'geoffrey.weal@vuw.ac.nz'
 __license__ = 'GNU AFFERO GENERAL PUBLIC LICENSE'
 __url__ = 'https://github.com/geoffreyweal/ACSD'
 __doc__ = 'See https://github.com/geoffreyweal/ACSD for the documentation on this program'
-__all__ = ['']
+__all__ = []
 
 # ------------------------------------------------------------------------------------------------------------------------

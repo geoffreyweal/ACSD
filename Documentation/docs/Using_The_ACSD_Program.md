@@ -2,26 +2,26 @@
 
 ## Running the ACSD Program
 
-The Access Cambridge Structural Database (ACSD) program is run by typing the ``ACSD run`` command into the terminal. This command requires either a ``gcd`` file, or a folder of ``gcd`` files. 
+The Access Cambridge Structural Database (ACSD) program is run by typing the ``acsd run`` command into the terminal. This command requires either a ``gcd`` file, or a folder of ``gcd`` files. 
 
 ```bash
 # Example of running the ACSD program on a gcd file.
-ACSD run crystals_like_ACUSEZ.gcd
+acsd run crystals_like_ACUSEZ.gcd
 
 # Example of running the ACSD program on a folder of gcd files.
-ACSD run crystal_gcd_files
+acsd run crystal_gcd_files
 ```
 You can also give multiple ``gcd`` files and folders:
 
 ```bash
 # Example of providing multiple gcd files and folder to ACSD
-ACSD run crystals_like_ACUSEZ.gcd crystal_gcd_files
+acsd run crystals_like_ACUSEZ.gcd crystal_gcd_files
 ```
 An example of a ``gcd`` file can be found in the [Example of a ``gcd`` file](Using_The_ACSD_Program.md#example-of-a-gcd-file) section. 
 
-There are several optional commands you can also provide to the ``ACSD run`` command:
+There are several optional commands you can also provide to the ``acsd run`` command:
 
-* ``--overwrite``: If you are re-running the ``ACSD run`` command, you can either:
+* ``--overwrite``: If you are re-running the ``acsd run`` command, you can either:
 
 	* ``--overwrite True``  -> Overwrite existing crystal files (this is the default).
 	* ``--overwrite False`` -> Skip any crystals that have already been processed. 
@@ -40,7 +40,7 @@ An example of using these optional commands is given below:
 
 ```bash
 # Example of providing multiple gcd files and folder to ACSD
-ACSD -T run crystal_gcd_files --overwrite False --crystals_to_exclude exclude_crystals.txt
+acsd -T run crystal_gcd_files --overwrite False --crystals_to_exclude exclude_crystals.txt
 ```
 
 !!! note
@@ -64,7 +64,7 @@ The ACSD program will create a folder called ``crystal_database`` and will save 
 
 * ``different_to_smiles.txt``: This is a complementary file to ``different_to_smiles.gcd`` that indicates possible reasons why there is a difference between the ``SMILES`` code and the crystal. 
 
-As well as the  ``crystal_database`` folder, the ACSD program will also create a file called ``ACSD_logfile.log`` that will record any warning messages produced while the ``ACSD run`` command runs. 
+As well as the  ``crystal_database`` folder, the ACSD program will also create a file called ``ACSD_logfile.log`` that will record any warning messages produced while the ``acsd run`` command runs. 
 
 
 ### Information about crystal quality given in the ``crystal_quality_information.csv`` file

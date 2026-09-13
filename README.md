@@ -26,7 +26,7 @@ This program takes advantage of the CSD Python API (https://downloads.ccdc.cam.a
 
 ## Installation
 
-It is recommended to read the installation page before using the ACSD program. See [Installation: Setting Up ACSD and Pre-Requisites Packages](https://geoffreyweal.github.io/ACSD/Installation) for more information. Note that you can install ACSD through ``pip3`` and ``conda``. 
+It is recommended to read the installation page before using the ACSD program. See [Installation: Setting Up ACSD and Pre-Requisites Packages](https://geoffreyweal.github.io/ACSD/Installation) for more information. Note that ACSD is not published to PyPI or conda; install it from GitHub with ``pip3 install --upgrade --user git+https://github.com/geoffreyweal/ACSD.git``. 
 
 ## Guide To Using ACSD
 

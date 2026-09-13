@@ -18,7 +18,15 @@ Mercury is software from the CCDC that allows you to look at crystal structures,
 
 ### Python 3 and ``pip3``
 
-This program is designed to work with **Python 3**. This program can only be used with Python 3.7. This is because the CSD Python API can only run using Python 3.7. 
+This program is designed to work with **Python 3**. The Python version you can use is set by the CSD Python API, which ACSD depends on to talk to the CSD.
+
+!!! note
+
+	Older versions of the CSD Python API required Python 3.7. **This is no longer the case.** As of CSD Python API 3.7.x, the API is fully supported on **Python 3.11 and Python 3.12**, and pip/conda packages are also available for Python 3.10 (with limited support). Python 3.11 is the version that ships with the CSD Software Portfolio, and the installer bundles its own miniconda Python for you.
+
+	Note that the "3.7" in *CSD Python API 3.7* is the **API version**, not the Python version. It is easy to confuse the two.
+
+	See the [CSD Python API installation notes](https://downloads.ccdc.cam.ac.uk/documentation/API/installation_notes.html) for the current list of supported platforms.
 
 To find out if you have Python 3 on your computer and what version you have, type into the terminal
 
@@ -30,7 +38,7 @@ If you have Python 3 on your computer, you will get the version of python you ha
 
 ```bash
 user@computer_name path % python --version
-Python 3.7.9
+Python 3.11.15
 ```
 
 If you have Python 3, you may have ``pip`` installed on your computer as well. ``pip`` is a python package installation tool that is recommended by Python for installing Python packages. To see if you have ``pip`` installed, type into the terminal
@@ -198,7 +206,7 @@ pip3 install --upgrade --user packaging
 The ``SUMELF`` program contains several methods that are used by multiple programs in the grand scheme to obtain exciton and charge diffusion in crystals. The easiest way to install ``SUMELF`` is though ``pip``. Type the following into the terminal:
 
 ```bash
-pip3 install --upgrade --user SUMELF
+pip3 install --upgrade --user git+https://github.com/geoffreyweal/SUMELF.git
 ```
 
 However, there are other ways to install the ``SUMELF`` program. See the [SUMELF Installation webpage](https://geoffreyweal.github.io/SUMELF/Installation.html) for more information. 
