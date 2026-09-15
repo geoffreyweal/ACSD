@@ -11,10 +11,67 @@ from filelock import FileLock
 import multiprocessing as mp
 from tqdm.contrib.concurrent import process_map
 
+import traceback
+
 from ACSD.ACSD.get_crystals_from_CSD_methods.get_inputs                          import get_inputs
-from ACSD.ACSD.get_crystals_from_CSD_methods.get_crystal_from_CSD_single_process import get_crystal_from_CSD_single_process
+from ACSD.ACSD.get_crystals_from_CSD_methods.get_crystal_from_CSD_single_process import get_crystal_from_CSD_single_process, append_to_file
 from ACSD.ACSD.get_crystals_from_CSD_methods.Integer                             import Integer
 from ACSD.ACSD.get_crystals_from_CSD_methods.CustomParallelLogger                import CustomParallelLogger
+
+# ---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+def get_crystal_from_CSD_single_process_safely(input_data):
+	"""
+	Process one crystal, and record rather than raise if it goes wrong.
+
+	``get_crystal_from_CSD_single_process`` raises on a crystal it cannot
+	handle, which ends the whole run - so a single problem crystal stops every
+	crystal after it from being collected. Over a large database that is the
+	difference between a run that finishes and one that has to be restarted
+	repeatedly.
+
+	The crystal that failed is written to "crystals_that_failed.txt" in the
+	crystal database folder, with the exception and its traceback, and the run
+	carries on to the next identifier.
+
+	NOTE: this must stay a module-level function. The multiprocessing branch
+	      passes it to process_map, which pickles it by name.
+
+	Parameters
+	----------
+	input_data : tuple
+		The input variables for one crystal, as built by ``get_inputs``.
+
+	Returns
+	-------
+	Whatever ``get_crystal_from_CSD_single_process`` returns, or False if it
+	raised.
+	"""
+
+	# First, get the pieces of input_data needed to report a failure.
+	identifier                = input_data[0]
+	save_crystals_to          = input_data[5]
+	crystals_not_written_lock = input_data[6]
+
+	# Second, try to process this crystal as normal.
+	try:
+		return get_crystal_from_CSD_single_process(input_data)
+	except KeyboardInterrupt:
+		# Never swallow the user stopping the run.
+		raise
+	except Exception as exception:
+
+		# 2.1: Record the crystal that failed, with enough detail to debug it later.
+		message = str(identifier)+': '+exception.__class__.__name__+': '+str(exception)
+		append_to_file(save_crystals_to+'/'+'crystals_that_failed.txt', message, crystals_not_written_lock)
+		append_to_file(save_crystals_to+'/'+'crystals_that_failed_tracebacks.txt', message+'\n'+traceback.format_exc(), crystals_not_written_lock)
+
+		# 2.2: Note it in "crystals_not_written.txt" as well, so every crystal
+		#      missing from the database has a reason recorded in one place.
+		append_to_file(save_crystals_to+'/'+'crystals_not_written.txt', message, crystals_not_written_lock)
+
+		# 2.3: Move on to the next crystal.
+		return False
 
 def get_crystals_from_CSD(identifiers, save_crystals_to, overwrite_existing_crystal_files=True, no_of_cpus=1):
 	"""
@@ -135,8 +192,8 @@ def get_crystals_from_CSD(identifiers, save_crystals_to, overwrite_existing_crys
 					no_of_crystals_recorded.value    += 1
 					continue
 
-				# 4.1.11.7: Obtain the crystal from the CCDC database. 
-				get_crystal_from_CSD_single_process(input_data)
+				# 4.1.11.7: Obtain the crystal from the CCDC database.
+				get_crystal_from_CSD_single_process_safely(input_data)
 
 		# 4.1.12: Convert "no_of_crystals_recorded" from a mp.Value object to a int variable.
 		no_of_crystals_recorded = int(no_of_crystals_recorded.value)
@@ -184,7 +241,7 @@ def get_crystals_from_CSD(identifiers, save_crystals_to, overwrite_existing_crys
 
 			# 4.2.12: Obtain the crystal from the CCDC database.
 			print(f'Obtaining Crystal xyz files from the CCDC using {no_of_cpus} cpus', file=sys.stderr)
-			process_map(get_crystal_from_CSD_single_process, inputs, total=len(identifiers), unit='identifier', desc='Obtaining Crystals from CCDC', max_workers=no_of_cpus)
+			process_map(get_crystal_from_CSD_single_process_safely, inputs, total=len(identifiers), unit='identifier', desc='Obtaining Crystals from CCDC', max_workers=no_of_cpus)
 			# = mp.Pool(processes=no_of_cpus)
 			#pool.map_async(get_crystal_from_CSD_single_process, tqdm(inputs, total=len(identifiers), unit='identifier', desc='Obtaining Crystals from CCDC'))
 			#pool.close()
