@@ -43,6 +43,11 @@ def find_scripts():
 
 setup(name='ACSD',
       packages=find_packages(root='ACSD'),
+      # Without this, setuptools installs only the .py files and silently drops
+      # everything else, so an installed ACSD has no solvent mol files and no
+      # isotope data. It then fails at run time looking for files that are
+      # sitting in the repository it was installed from.
+      package_data={'ACSD.ACSD': ['solvent_files/*', 'isotope_data/*']},
       entry_points={'console_scripts': ['acsd=ACSD.cli.main:main']},
       scripts=find_scripts(),
       version=get_version_number(),
